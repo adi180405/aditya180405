@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏠 House Price Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #283e51, #485563);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+        .login {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            width: 370px;
+            text-align: center;
+        }
+        .login h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+        .login input[type="number"],
+        .login select {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+        }
+        .login button {
+            margin-top: 15px;
+            padding: 12px;
+            width: 100%;
+            background: #00c6ff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .login button:hover {
+            background: #0072ff;
+        }
+        h2 {
+            margin-top: 20px;
+            font-size: 22px;
+            background: rgba(0,0,0,0.4);
+            padding: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login">
+        <h1>🏠 House Price Prediction 🏠</h1>
+
+        <!-- Correct Flask form route -->
+        <form action="{{ url_for('predict_datapoint') }}" method="post">
+            <input type="number" name="area" placeholder="Area (sq. ft)" required>
+            <input type="number" name="bedrooms" placeholder="Number of Bedrooms" required>
+            <input type="number" name="bathrooms" placeholder="Number of Bathrooms" required>
+
+            <select name="mainroad" required>
+                <option value="">Main Road Access?</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+
+            <select name="guestroom" required>
+                <option value="">Guest Room Available?</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+
+            <select name="basement" required>
+                <option value="">Basement Available?</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+
+            <select name="hotwaterheating" required>
+                <option value="">Hot Water Heating?</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+
+            <select name="airconditioning" required>
+                <option value="">Air Conditioning?</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+
+            <input type="number" name="parking" placeholder="Number of Parking Spots" required>
+
+            <select name="prefarea" required>
+                <option value="">Preferred Area?</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+
+            <select name="furnishingstatus" required>
+                <option value="">Furnishing Status</option>
+                <option value="2">Furnished</option>
+                <option value="1">Semi-Furnished</option>
+                <option value="0">Unfurnished</option>
+            </select>
+
+            <button type="submit">Predict Price</button>
+        </form>
+
+        {% if results %}
+            <h2>Predicted Price: ₹{{ results | round(2) }}</h2>
+        {% endif %}
+    </div>
+</body>
+</html>
