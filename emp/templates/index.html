@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Performance Predictor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #eef2ff, #f5f3ff);
+    }
+    input:focus, select:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.4);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center py-10">
+
+  <!-- Header -->
+  <h1 class="text-4xl md:text-5xl font-extrabold text-indigo-700 mb-8 text-center">
+    📊 Employee Performance Predictor
+  </h1>
+
+  <!-- Form Card -->
+  <form action="{{ url_for('predict_datapoint') }}" method="POST"
+    class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-3xl border border-gray-200 space-y-6">
+
+    <h2 class="text-2xl font-semibold text-gray-700 border-b pb-3">Enter Employee Details</h2>
+
+    <!-- Input Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+      <!-- Numeric Inputs -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Age (Years)</label>
+        <input type="number" name="Age" min="18" max="70" required
+          placeholder="25" class="w-full p-3 border border-gray-300 rounded-xl">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Monthly Salary (₹)</label>
+        <input type="number" name="Monthly_Salary" min="0" required
+          placeholder="50000" class="w-full p-3 border border-gray-300 rounded-xl">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Work Hours Per Week</label>
+        <input type="number" name="Work_Hours_Per_Week" min="1" max="100" required
+          placeholder="40" class="w-full p-3 border border-gray-300 rounded-xl">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Projects Handled</label>
+        <input type="number" name="Projects_Handled" min="0" required
+          placeholder="3" class="w-full p-3 border border-gray-300 rounded-xl">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Overtime Hours (Monthly)</label>
+        <input type="number" name="Overtime_Hours" min="0" required
+          placeholder="5" class="w-full p-3 border border-gray-300 rounded-xl">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Sick Days (Annual)</label>
+        <input type="number" name="Sick_Days" min="0" required
+          placeholder="2" class="w-full p-3 border border-gray-300 rounded-xl">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Promotions (Last 5 Years)</label>
+        <input type="number" name="Promotions" min="0" required
+          placeholder="1" class="w-full p-3 border border-gray-300 rounded-xl">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Satisfaction Score (0–10)</label>
+        <input type="number" name="Employee_Satisfaction_Score" min="0" max="10" step="0.1" required
+          placeholder="8.5" class="w-full p-3 border border-gray-300 rounded-xl">
+      </div>
+    </div>
+
+    <!-- Dropdown Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t">
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+        <select name="Department" required class="w-full p-3 border border-gray-300 rounded-xl bg-white">
+          <option value="0">IT</option>
+          <option value="1">Finance</option>
+          <option value="2">Customer Support</option>
+          <option value="3">Engineering</option>
+          <option value="4">Marketing</option>
+          <option value="5">HR</option>
+          <option value="6">Operations</option>
+          <option value="7">Sales</option>
+          <option value="8">Legal</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+        <select name="Gender" required class="w-full p-3 border border-gray-300 rounded-xl bg-white">
+          <option value="1">Male</option>
+          <option value="0">Female</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+        <select name="Job_Title" required class="w-full p-3 border border-gray-300 rounded-xl bg-white">
+          <option value="0">Specialist</option>
+          <option value="1">Developer</option>
+          <option value="2">Analyst</option>
+          <option value="3">Manager</option>
+          <option value="4">Technician</option>
+          <option value="5">Engineer</option>
+          <option value="6">Consultant</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Education Level</label>
+        <select name="Education_Level" required class="w-full p-3 border border-gray-300 rounded-xl bg-white">
+          <option value="0">High School</option>
+          <option value="1">Bachelor</option>
+          <option value="2">Master</option>
+          <option value="3">PhD</option>
+        </select>
+      </div>
+
+      <div class="col-span-full">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Remote Work Frequency</label>
+        <select name="Remote_Work_Frequency" required class="w-full p-3 border border-gray-300 rounded-xl bg-white">
+          <option value="0">Never (On-site)</option>
+          <option value="1">Sometimes (Hybrid)</option>
+          <option value="2">Always (Fully Remote)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit"
+      class="w-full mt-4 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transform hover:scale-[1.02] transition duration-300 shadow-lg">
+      🔮 Predict Performance
+    </button>
+  </form>
+
+  <!-- Result Display -->
+  {% if results %}
+  <div
+    class="mt-10 bg-green-100 text-green-900 p-6 rounded-2xl shadow-xl border-l-8 border-green-500 w-full max-w-3xl text-center">
+    <h3 class="text-2xl font-semibold">Predicted Performance Score</h3>
+    <p class="text-4xl font-extrabold mt-3 text-green-700">{{ results }}</p>
+  </div>
+  {% endif %}
+
+  <!-- Back Link -->
+  <a href="{{ url_for('home') }}"
+    class="mt-8 text-indigo-600 hover:text-indigo-800 font-medium transition duration-200">
+    ← Back to Home
+  </a>
+
+</body>
+</html>
